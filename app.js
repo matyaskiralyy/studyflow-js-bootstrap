@@ -15,7 +15,32 @@
 
 // 1. DOM-elemek kiválasztása.
 
+const taskForm = document.querySelector("#taskForm");
+const titleInput = document.querySelector("#taskTitle");
+const categoryInput = document.querySelector("#taskCategory");
+const priorityInput = document.querySelector("#taskPriority");
+const dueDateInput = document.querySelector("#taskDueDate");
+const formMessage = document.querySelector("#formMessage");
+const taskList = document.querySelector("#taskList");
+const emptyState = document.querySelector("#emptyState");
+const statusMessage = document.querySelector("#statusMessage");
 
+let tasks = [];
+
+function createId() {
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function readTaskFromForm() {
+  return {
+    id: createId(),
+    title: titleInput.value,
+    category: categoryInput.value,
+    priority: priorityInput.value,
+    dueDate: dueDateInput.value,
+    completed: false
+  };
+}
 // 2. Alkalmazásállapot: feladatok, szűrő és keresőkifejezés.
 
 
