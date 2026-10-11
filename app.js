@@ -41,6 +41,62 @@ function readTaskFromForm() {
     completed: false
   };
 }
+
+function createTaskElement(task) {
+  const item = document.createElement("li");
+  item.className = "task-item";
+  item.classList.toggle("task-item--completed", task.completed);
+
+  const title = document.createElement("h3");
+  title.className = "task-title";
+  title.textContent = task.title;
+
+  // Készíts metaadatokat és műveleti gombokat is.
+  return item;
+}
+
+function renderTasks() {
+  taskList.replaceChildren(...tasks.map(createTaskElement));
+  emptyState.classList.toggle("is-hidden", tasks.length > 0);
+}
+
+taskForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  const newTask = readTaskFromForm();
+
+  if (newTask.title === "") {
+    formMessage.textContent = "A feladat címének kitöltése kötelező.";
+    return;
+  }
+
+  tasks.push(newTask);
+  renderTasks();
+  taskForm.reset();
+});
+
+taskList.addEventListener("click", function (event) {
+  const actionButton = event.target.closest("button[data-action]");
+
+  if (actionButton === null) {
+    return;
+  }
+
+  const taskId = actionButton.dataset.id;
+
+  if (actionButton.dataset.action === "toggle") {
+    tasks = tasks.map((task) =>
+      task.id === taskId ? { ...task, completed: !task.completed } : task
+    );
+  }
+
+  if (actionButton.dataset.action === "delete") {
+    tasks = tasks.filter((task) => task.id !== taskId);
+  }
+
+  renderTasks();
+});
+
+
 // 2. Alkalmazásállapot: feladatok, szűrő és keresőkifejezés.
 
 
